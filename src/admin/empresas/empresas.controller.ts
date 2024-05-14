@@ -7,7 +7,7 @@ export class EmpresasController {
 
     @Get()
     getEmpresas() {
-        return "Aqui se obtendran todas las empresas"
+        return "Aqui se obtendran todas las empresassad"
     }
 
     @Post()
