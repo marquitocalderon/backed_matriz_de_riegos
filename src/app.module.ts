@@ -13,6 +13,7 @@ import { AccesosController } from './admin/accesos/accesos.controller';
 import { AccesosModule } from "./admin/accesos/accesos.module";
 import { CasosModule } from './admin/casos/casos.module';
 import { EmpresasModule } from './admin/empresas/empresas.module';
+import { SucursalesModule } from './admin/sucursales/sucursales.module';
 
 
 
@@ -49,6 +50,7 @@ import { EmpresasModule } from './admin/empresas/empresas.module';
     AccesosModule,
     CasosModule,
     EmpresasModule,
+    SucursalesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
