@@ -9,7 +9,7 @@ export class EmpresasController {
 
     @Get()
     getEmpresas() {
-        return "Aqui se obtendran todas las empresas"
+        return  this.empresaService.getAllEmpresas()    
     }
 
     @Post()
