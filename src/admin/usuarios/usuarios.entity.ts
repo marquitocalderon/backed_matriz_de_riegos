@@ -1,6 +1,7 @@
 
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { PerfilesEntity } from "../perfiles/perfiles.entity";
+import { SucursalesEntity } from "../sucursales/sucursales.entity";
 
 @Entity({name: "usuarios"})
 export class UsuariosEntity {
@@ -27,6 +28,14 @@ export class UsuariosEntity {
       })
     @JoinColumn({name: "idperfil"})
     perfiles: PerfilesEntity
+
+    
+    @ManyToOne(() => SucursalesEntity, (sucursal) => sucursal.id_sucursal, {
+      // cascade: true,
+      eager: true, // para que traiga todos los datos de la columna relacionada
+    })
+  @JoinColumn({name: "idsucursal"})
+  sucursales: SucursalesEntity
 
     
 

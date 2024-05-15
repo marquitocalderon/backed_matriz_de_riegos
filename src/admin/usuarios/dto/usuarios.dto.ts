@@ -19,9 +19,16 @@ export class CrearUsuarioDto {
 
     @IsNotEmpty({ message: 'El idperfil no debe estar vacío' })
     @IsString({message: "el campo idperfil DEBE MANDARSE EN STRING"})
-    @MaxLength(100 , {message: 'El campo password debe 100 caracteres como maximo'})
-    @MinLength(1 , {message: 'El campo password debe 1 caracteres como minimo'})
+    @MaxLength(100 , {message: 'El campo idperfil debe 100 caracteres como maximo'})
+    @MinLength(1 , {message: 'El campo idperfil debe 1 caracteres como minimo'})
     idperfil:string
+
+    
+    @IsNotEmpty({ message: 'El idsucursal no debe estar vacío' })
+    @IsString({message: "el campo idsucursal DEBE MANDARSE EN STRING"})
+    @MaxLength(100 , {message: 'El campo pasidsucursalword debe 100 caracteres como maximo'})
+    @MinLength(1 , {message: 'El campo idsucursal debe 1 caracteres como minimo'})
+    idsucursal:string
 }
 
 export class UpdateUsuarioDto {
@@ -45,6 +52,13 @@ export class UpdateUsuarioDto {
     @MaxLength(100 , {message: 'El campo idperfil debe 100 caracteres como maximo'})
     @MinLength(1 , {message: 'El campo idperfil debe 1 caracteres como minimo'})
     idperfil:string
+
+        
+    @IsNotEmpty({ message: 'El idsucursal no debe estar vacío' })
+    @IsString({message: "el campo idsucursal DEBE MANDARSE EN STRING"})
+    @MaxLength(100 , {message: 'El campo pasidsucursalword debe 100 caracteres como maximo'})
+    @MinLength(1 , {message: 'El campo idsucursal debe 1 caracteres como minimo'})
+    idsucursal:string
 }
 
 

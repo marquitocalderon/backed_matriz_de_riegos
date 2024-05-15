@@ -8,6 +8,7 @@ import { SucursalesEntity } from './sucursales.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([SucursalesEntity, EmpresaEntity])],
   controllers: [SucursalesController],
-  providers: [SucursalesService]
+  providers: [SucursalesService],
+  exports: [SucursalesService]
 })
 export class SucursalesModule {}

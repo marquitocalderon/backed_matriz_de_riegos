@@ -7,6 +7,7 @@ import { CrearUsuarioDto, UpdateUsuarioDto } from './dto/usuarios.dto';
 import * as bcryptjs from 'bcryptjs'
 import { PerfilesEntity } from '../perfiles/perfiles.entity';
 import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { SucursalesEntity } from '../sucursales/sucursales.entity';
 
 // Asegúrate de importar tu entidad PerfilesEntity
 
@@ -15,6 +16,7 @@ export class UsuariosService {
   constructor(
     @InjectRepository(UsuariosEntity) private usuarioRepository: Repository<UsuariosEntity>,
     @InjectRepository(PerfilesEntity) private perfilRepository: Repository<PerfilesEntity>,
+    @InjectRepository(SucursalesEntity) private sucursalRepository: Repository<SucursalesEntity>,
     private readonly cloudinaryService: CloudinaryService,
   ) { }
 
@@ -35,7 +37,7 @@ export class UsuariosService {
       where: {
         usuario: usuario,
       },
-      select:["id_usuario","usuario","password","perfiles", "imagen"]
+      select:["id_usuario","usuario","password","perfiles", "imagen", "sucursales"]
     });
   }
 
@@ -48,7 +50,7 @@ export class UsuariosService {
         id_usuario: id,
         estado_usuario: true,
       },
-      select: ["id_usuario", "usuario", "imagen", "estado_usuario", "perfiles"], // Lista de campos que deseas seleccionar
+      select: ["id_usuario", "usuario", "imagen", "estado_usuario", "perfiles", "sucursales"], // Lista de campos que deseas seleccionar
     });
 
     if (!usuarioEncontrado) {
@@ -63,6 +65,20 @@ export class UsuariosService {
   }
 
   async crearUsuario(usuarioFronted: CrearUsuarioDto, imagen: Express.Multer.File) {
+    const sucusalEncontrada = await this.sucursalRepository.findOne({
+      where: {
+          id_sucursal: parseInt(usuarioFronted.idsucursal, 10),
+          estado: true,
+      }// Lista de campos que deseas seleccionar
+  });
+
+  if (!sucusalEncontrada) {
+      throw new HttpException('sucusal no encontrado', HttpStatus.NOT_FOUND);
+  }
+
+  if (!sucusalEncontrada.estado) {
+      throw new HttpException('sucusal Eliminado', HttpStatus.NOT_FOUND);
+  }
 
     const perfilEncontrado = await this.perfilRepository.findOneBy({
       id_perfil: parseInt(usuarioFronted.idperfil, 10),
@@ -94,6 +110,7 @@ export class UsuariosService {
       password: await bcryptjs.hash(usuarioFronted.password, 10),
       imagen: imagenUrl,
       perfiles: perfilEncontrado,
+      sucursales: sucusalEncontrada
     });
 
     await this.usuarioRepository.save(nuevoUsuarioEntity);
@@ -103,7 +120,20 @@ export class UsuariosService {
 
 
   async actualizarUsuario(id_usuario: number, datosDelFronted: UpdateUsuarioDto, imagen: Express.Multer.File) {
+    const sucusalEncontrada = await this.sucursalRepository.findOne({
+      where: {
+          id_sucursal: parseInt(datosDelFronted.idsucursal, 10),
+          estado: true,
+      }// Lista de campos que deseas seleccionar
+  });
 
+  if (!sucusalEncontrada) {
+      throw new HttpException('sucusal no encontrado', HttpStatus.NOT_FOUND);
+  }
+
+  if (!sucusalEncontrada.estado) {
+      throw new HttpException('sucusal Eliminado', HttpStatus.NOT_FOUND);
+  }
     const perfilEncontrado = await this.perfilRepository.findOneBy({
       id_perfil: parseInt(datosDelFronted.idperfil, 10),
       estado_perfil: true,
@@ -175,6 +205,7 @@ export class UsuariosService {
       password: nuevaContraseñaHash ? nuevaContraseñaHash : usuarioExistente.password,
       imagen: imagenUrl,
       perfiles: perfilEncontrado,
+      sucursales: sucusalEncontrada
   });
 
 
