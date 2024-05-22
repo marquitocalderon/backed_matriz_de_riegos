@@ -40,18 +40,23 @@ export class AuthService {
       throw new UnauthorizedException('Password Incorrecto');
     }
 
-    const accesosDeModulos = await this.accesosService.obtenerDatos();
+    // const accesosDeModulos = await this.accesosService.obtenerDatos();
 
-    const accesoPerfilUsuario = accesosDeModulos.find(acceso => acceso.nombre_perfil === usuario.perfiles.nombre_perfil);
+    // const accesoPerfilUsuario = accesosDeModulos.find(acceso => acceso.nombre_perfil === usuario.perfiles.nombre_perfil);
 
-    const modulosInactivos = accesoPerfilUsuario.modulosasignados.filter(modulo => modulo.activo === true);
+    // const modulosInactivos = accesoPerfilUsuario.modulosasignados.filter(modulo => modulo.activo === true);
 
     const payload = {
       sub: usuario.id_usuario,
       username: usuario.usuario,
       imagen: usuario.imagen,
       role: usuario.perfiles.nombre_perfil,
-      modulosasignados :modulosInactivos
+      id_perfil: usuario.perfiles.id_perfil,
+      id_sucursal: usuario.sucursales.id_sucursal,
+      sucursal : usuario.sucursales.nombre_sucursal,
+      empresa: usuario.sucursales.empresas.nombre_empresa,
+      id_empresa: usuario.sucursales.empresas.id_empresa,
+      // modulosasignados :modulosInactivos
     };
 
     const accessToken = await this.jwtService.signAsync(payload, {

@@ -9,7 +9,7 @@ export class SucursalesEntity {
     @PrimaryGeneratedColumn()
     id_sucursal: number;
 
-    @Column({ length: 16 , unique: true}) // Especifica la longitud máxima de la columna usuario
+    @Column() // Especifica la longitud máxima de la columna usuario
     nombre_sucursal: string;
 
     @Column({default: true})

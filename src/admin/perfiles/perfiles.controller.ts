@@ -12,7 +12,7 @@ import { AUTENTICACION_PARA_EL } from '../auth/decorators/auth.decorator';
 @ApiBearerAuth()
 @ApiTags("PERFILES")
 @Controller('perfiles')
-@AUTENTICACION_PARA_EL(Role.ADMIN)
+// @AUTENTICACION_PARA_EL(Role.ADMIN)
 export class PerfilesController {
 
     constructor(private perfilService: PerfilesService){}
