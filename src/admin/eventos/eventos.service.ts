@@ -4,6 +4,7 @@ import { EventosEntity } from './eventos.entity';
 import { Repository } from 'typeorm';
 import { UsuariosEntity } from '../usuarios/usuarios.entity';
 import { interval } from 'rxjs';
+import { MatrizEntity } from '../matriz/matriz.entity';
 
 @Injectable()
 export class EventosService {
@@ -11,6 +12,7 @@ export class EventosService {
 
     constructor(@InjectRepository(EventosEntity) private eventosRepository: Repository<EventosEntity>,
         @InjectRepository(UsuariosEntity) private usuarioRepository: Repository<UsuariosEntity>,
+        @InjectRepository(MatrizEntity) private matrizRepository: Repository<MatrizEntity>,
     ) { }
     async obtenerAll(): Promise<any[]> {
         const eventos = await this.eventosRepository.find({
@@ -27,6 +29,7 @@ export class EventosService {
             return {
                 id_evento: evento.id_evento,
                 usuario: evento.usuarios,
+                matriz : evento.matrices,
                 nombre_evento: evento.nombre_evento,
                 nivel_riesgo: evento.nivel_riesgo,
                 probabilidad: evento.probabilidad,
@@ -98,6 +101,7 @@ export class EventosService {
             return {
                 id_evento: evento.id_evento,
                 usuario: evento.usuarios,
+                matriz : evento.matrices,
                 nombre_evento: evento.nombre_evento,
                 nivel_riesgo: evento.nivel_riesgo,
                 probabilidad: evento.probabilidad,
@@ -164,11 +168,27 @@ export class EventosService {
             throw new HttpException('Usuario Eliminado', HttpStatus.NOT_FOUND);
         }
 
-        console.log(body);
+        const datoEncontrado2 = await this.matrizRepository.findOne({
+            where: {
+                id_matriz: parseInt(body.id_matriz, 10),
+                estado_matriz: true,
+            }// Lista de campos que deseas seleccionar
+        });
+
+        if (!datoEncontrado2) {
+            throw new HttpException('Matriz no encontrado', HttpStatus.NOT_FOUND);
+        }
+
+        if (!datoEncontrado2.estado_matriz) {
+            throw new HttpException('Matriz Eliminado', HttpStatus.NOT_FOUND);
+        }
+
+
 
         const nuevoDato = this.eventosRepository.create({
             ...body,
-            usuarios: datoEncontrado
+            usuarios: datoEncontrado,
+            matrices: datoEncontrado2
         });
 
         await this.eventosRepository.save(nuevoDato);

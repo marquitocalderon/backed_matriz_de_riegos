@@ -1,6 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { UsuariosEntity } from "../usuarios/usuarios.entity";
 import { EmpresaEntity } from "../empresas/empresas.entity";
+import { MatrizEntity } from "../matriz/matriz.entity";
 
 @Entity({name: "eventos"})
 export class EventosEntity {
@@ -86,6 +87,13 @@ export class EventosEntity {
     })
     @JoinColumn({ name: "id_usuario" })
     usuarios: UsuariosEntity;
+
+    
+    @ManyToOne(() => MatrizEntity, (data) => data.id_matriz, {
+        eager: true, // para que traiga todos los datos de la columna relacionada
+    })
+    @JoinColumn({ name: "id_matriz" })
+    matrices: MatrizEntity;
 
 
 }

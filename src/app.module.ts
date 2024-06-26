@@ -11,10 +11,10 @@ import { StripeModule } from './admin/stripe/stripe.module';
 import { ModulosModule } from './admin/modulos/modulos.module';
 import { AccesosController } from './admin/accesos/accesos.controller';
 import { AccesosModule } from "./admin/accesos/accesos.module";
-import { CasosModule } from './admin/casos/casos.module';
 import { EmpresasModule } from './admin/empresas/empresas.module';
 import { SucursalesModule } from './admin/sucursales/sucursales.module';
 import { EventosModule } from './admin/eventos/eventos.module';
+import { MatrizModule } from './admin/matriz/matriz.module';
 
 
 
@@ -49,10 +49,10 @@ import { EventosModule } from './admin/eventos/eventos.module';
     StripeModule,
     ModulosModule,
     AccesosModule,
-    CasosModule,
     EmpresasModule,
     SucursalesModule,
     EventosModule,
+    MatrizModule,
   ],
   controllers: [AppController],
   providers: [AppService],
