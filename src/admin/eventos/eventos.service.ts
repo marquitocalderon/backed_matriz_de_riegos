@@ -79,12 +79,13 @@ export class EventosService {
         });
     }
 
-    async obtenerAllbyEmpresa(id_empresa: any): Promise<any[]> {
+    async getSegunLaMatriz(id_matriz: any, id_empresa : any): Promise<any[]> {
         const eventos = await this.eventosRepository.find({
             order: {
                 id_evento: "DESC"
             },
             where: {
+                matrices: {id_matriz: id_matriz},
                 estado: true,
                 usuarios: {
                     sucursales: {

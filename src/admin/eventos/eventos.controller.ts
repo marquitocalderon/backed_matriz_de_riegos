@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { EventosService } from './eventos.service';
 
 @Controller('eventos')
@@ -11,9 +11,12 @@ export class EventosController {
         return this.service.obtenerAll();
     }
 
-    @Get(':id')
-    getPerfilById(@Param('id', ParseIntPipe) id:number){
-        return this.service.obtenerAllbyEmpresa(id);
+    @Get(':id_matriz')
+    getIdMatriz(
+        @Param('id_matriz', ParseIntPipe) id_matriz: number,
+        @Query('id_empresa', ParseIntPipe) id_empresa: number
+    ) {
+        return this.service.getSegunLaMatriz(id_matriz, id_empresa);
     }
 
     @Post()

@@ -15,6 +15,15 @@ export class MatrizService {
     ) { }
 
 
+    getData() {
+        return this.matrizRepository.find({
+            relations: ['usuarios'],
+            where: {
+                estado_matriz: true,
+            }
+        });
+    }
+
 
 
     
