@@ -12,7 +12,12 @@ export class MatrizController {
     obtenerMatriz() {
         return this.service.getData();
     }
-     
+    
+    @Get(':id')
+    getPerfilById(@Param('id', ParseIntPipe) id:number){
+        return this.service.getDataByid(id)
+    }
+
     @Post()
     crearMatriz(@Body() body: MatrizDTO){
         return this.service.crearDato(body);

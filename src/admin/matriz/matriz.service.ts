@@ -24,6 +24,23 @@ export class MatrizService {
         });
     }
 
+    getDataByid(id_empresa : any) {
+        return this.matrizRepository.find({
+            relations: ['usuarios'],
+            where: {
+                estado_matriz: true,
+                usuarios: {
+                    sucursales: {
+                        empresas: {
+                            id_empresa: id_empresa
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+
 
 
     
