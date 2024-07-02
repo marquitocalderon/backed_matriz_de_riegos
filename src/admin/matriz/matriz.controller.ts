@@ -10,7 +10,7 @@ export class MatrizController {
 
     @Get()
     obtenerMatriz() {
-        return this.service.getData();
+        return this.service.obtenerAll();
     }
     
     @Get(':id')
@@ -19,7 +19,7 @@ export class MatrizController {
     }
 
     @Post()
-    crearMatriz(@Body() body: MatrizDTO){
+    crearMatriz(@Body() body: any){
         return this.service.crearDato(body);
     } 
 

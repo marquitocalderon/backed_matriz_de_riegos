@@ -28,51 +28,13 @@ export class EventosService {
         return eventos.map(evento => {
             return {
                 id_evento: evento.id_evento,
-                usuario: evento.usuarios,
                 matriz : evento.matrices,
                 nombre_evento: evento.nombre_evento,
                 nivel_riesgo: evento.nivel_riesgo,
                 probabilidad: evento.probabilidad,
                 impacto : evento.impacto,
-                valor: evento.valor,
-                matriz_impacto: {
-                    minima: evento.minima,
-                    menor: evento.menor,
-                    moderada: evento.moderada,
-                    mayor: evento.mayor,
-                    maxima: evento.maxima,
-                },
-                matriz_probabilidad: {
-                    muy_alta: evento.muy_alta,
-                    alta: evento.alta,
-                    media: evento.media,
-                    baja: evento.baja,
-                    muy_baja: evento.muy_baja,
-                },
-                intervalo_verde: [
-                    {
-                        de_verde: evento.de_verde,
-                        a_verde: evento.a_verde
-                    }
-                ],
-                intervalo_amarillo: [
-                    {
-                        de_amarillo: evento.de_amarillo,
-                        a_amarillo: evento.a_amarillo
-                    }
-                ],
-                intervalo_naranja: [
-                    {
-                        de_naranja: evento.de_naranja,
-                        a_naranja: evento.a_naranja
-                    }
-                ],
-                intervalo_rojo: [
-                    {
-                        de_rojo: evento.de_rojo,
-                        a_rojo: evento.a_rojo
-                    }
-                ]
+                estado: evento.estado,
+          
 
                 // Puedes mapear otros campos según sea necesario
             };
@@ -87,13 +49,6 @@ export class EventosService {
             where: {
                 matrices: {id_matriz: id_matriz},
                 estado: true,
-                usuarios: {
-                    sucursales: {
-                        empresas: {
-                            id_empresa: id_empresa
-                        }
-                    }
-                }
             }
         });
     
@@ -101,51 +56,14 @@ export class EventosService {
         return eventos.map(evento => {
             return {
                 id_evento: evento.id_evento,
-                usuario: evento.usuarios,
                 matriz : evento.matrices,
                 nombre_evento: evento.nombre_evento,
                 nivel_riesgo: evento.nivel_riesgo,
                 probabilidad: evento.probabilidad,
                 impacto : evento.impacto,
                 valor: evento.valor,
-                matriz_impacto: {
-                    minima: evento.minima,
-                    menor: evento.menor,
-                    moderada: evento.moderada,
-                    mayor: evento.mayor,
-                    maxima: evento.maxima,
-                },
-                matriz_probabilidad: {
-                    muy_alta: evento.muy_alta,
-                    alta: evento.alta,
-                    media: evento.media,
-                    baja: evento.baja,
-                    muy_baja: evento.muy_baja,
-                },
-                intervalo_verde: [
-                    {
-                        de_verde: evento.de_verde,
-                        a_verde: evento.a_verde
-                    }
-                ],
-                intervalo_amarillo: [
-                    {
-                        de_amarillo: evento.de_amarillo,
-                        a_amarillo: evento.a_amarillo
-                    }
-                ],
-                intervalo_naranja: [
-                    {
-                        de_naranja: evento.de_naranja,
-                        a_naranja: evento.a_naranja
-                    }
-                ],
-                intervalo_rojo: [
-                    {
-                        de_rojo: evento.de_rojo,
-                        a_rojo: evento.a_rojo
-                    }
-                ]
+                estado: evento.estado,
+
     
                 // Puedes mapear otros campos según sea necesario
             };
