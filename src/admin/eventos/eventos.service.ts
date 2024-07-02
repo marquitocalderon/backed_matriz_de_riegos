@@ -72,20 +72,7 @@ export class EventosService {
     
 
     async crearDato(body: any) {
-        const datoEncontrado = await this.usuarioRepository.findOne({
-            where: {
-                id_usuario: parseInt(body.id_usuario, 10),
-                estado_usuario: true,
-            }// Lista de campos que deseas seleccionar
-        });
 
-        if (!datoEncontrado) {
-            throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND);
-        }
-
-        if (!datoEncontrado.estado_usuario) {
-            throw new HttpException('Usuario Eliminado', HttpStatus.NOT_FOUND);
-        }
 
         const datoEncontrado2 = await this.matrizRepository.findOne({
             where: {
@@ -106,7 +93,6 @@ export class EventosService {
 
         const nuevoDato = this.eventosRepository.create({
             ...body,
-            usuarios: datoEncontrado,
             matrices: datoEncontrado2
         });
 

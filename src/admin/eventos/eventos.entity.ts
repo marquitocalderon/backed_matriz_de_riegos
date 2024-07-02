@@ -29,6 +29,7 @@ export class EventosEntity {
     valor: number;
 
     
+
     @ManyToOne(() => MatrizEntity, (data) => data.id_matriz, {
         eager: true, // para que traiga todos los datos de la columna relacionada
     })
