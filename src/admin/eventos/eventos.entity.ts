@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 import { UsuariosEntity } from "../usuarios/usuarios.entity";
 import { EmpresaEntity } from "../empresas/empresas.entity";
 import { MatrizEntity } from "../matriz/matriz.entity";
+import { IsoEntity } from "../iso/iso.entity";
 
 @Entity({name: "eventos"})
 export class EventosEntity {
@@ -33,8 +34,12 @@ export class EventosEntity {
     @ManyToOne(() => MatrizEntity, (data) => data.id_matriz, {
         eager: true, // para que traiga todos los datos de la columna relacionada
     })
+
     @JoinColumn({ name: "id_matriz" })
     matrices: MatrizEntity;
+
+    @JoinColumn({ name: "id_iso" })
+    isos: IsoEntity;
 
 
 }

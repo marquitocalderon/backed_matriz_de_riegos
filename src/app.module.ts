@@ -15,6 +15,7 @@ import { EmpresasModule } from './admin/empresas/empresas.module';
 import { SucursalesModule } from './admin/sucursales/sucursales.module';
 import { EventosModule } from './admin/eventos/eventos.module';
 import { MatrizModule } from './admin/matriz/matriz.module';
+import { IsoModule } from "./admin/iso/iso.module";
 
 
 
@@ -53,6 +54,7 @@ import { MatrizModule } from './admin/matriz/matriz.module';
     SucursalesModule,
     EventosModule,
     MatrizModule,
+    IsoModule
   ],
   controllers: [AppController],
   providers: [AppService],
