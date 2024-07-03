@@ -11,6 +11,12 @@ export class EventosController {
         return this.service.obtenerAll();
     }
 
+    @Get(':id_evento')
+    getEvento(@Param('id_evento', ParseIntPipe) id_evento: number) {
+        return this.service.obtenerPorEvento(id_evento);
+    }
+
+
     @Get(':id_matriz')
     getIdMatriz(
         @Param('id_matriz', ParseIntPipe) id_matriz: number,

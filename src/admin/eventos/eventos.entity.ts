@@ -29,6 +29,16 @@ export class EventosEntity {
     @Column()
     valor: number;
 
+    @Column({type: 'text'})
+    dominio : string;
+
+    @Column({type: 'text'})
+    objetivo : string;
+
+
+    @Column({type: 'text'})
+    control : string;
+
     
 
     @ManyToOne(() => MatrizEntity, (data) => data.id_matriz, {
@@ -38,8 +48,6 @@ export class EventosEntity {
     @JoinColumn({ name: "id_matriz" })
     matrices: MatrizEntity;
 
-    @JoinColumn({ name: "id_iso" })
-    isos: IsoEntity;
-
+ 
 
 }
