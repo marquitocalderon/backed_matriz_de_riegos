@@ -87,20 +87,19 @@ export class EventosService {
         });
     }
 
-
-    async obtenerPorEvento(id_evento: number): Promise<any> {
+    async obtenerPorEvento(id_evento: number): Promise<any[]> {
         const evento = await this.eventosRepository.findOne({
             where: { id_evento, estado: true },
             relations: ['matrices']
         });
-
+    
         if (!evento) {
             throw new NotFoundException('Evento no encontrado');
         }
-
+    
         const matriz = evento.matrices;
-
-        return {
+    
+        return [{
             id_evento: evento.id_evento,
             matriz: {
                 id_matriz: matriz.id_matriz,
@@ -154,8 +153,9 @@ export class EventosService {
             objetivo: evento.objetivo,
             control: evento.control,
             estado: evento.estado,
-        };
+        }];
     }
+    
 
 
     async getSegunLaMatriz(id_matriz: any, id_empresa : any): Promise<any[]> {
