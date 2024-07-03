@@ -41,6 +41,15 @@ export class EventosEntity {
 
     
 
+    @ManyToOne(() => UsuariosEntity, (data) => data.id_usuario, {
+        eager: true, // para que traiga todos los datos de la columna relacionada
+    })
+
+    @JoinColumn({ name: "id_usuario" })
+    usuarios: UsuariosEntity;
+
+
+
     @ManyToOne(() => MatrizEntity, (data) => data.id_matriz, {
         eager: true, // para que traiga todos los datos de la columna relacionada
     })

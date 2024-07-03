@@ -31,6 +31,7 @@ export class EventosService {
 
             return {
                 id_evento: evento.id_evento,
+                usuarios: evento.usuarios,
                 matriz: {
                     id_matriz: matriz.id_matriz,
                     nombre_matriz: matriz.nombre_matriz,
@@ -101,6 +102,7 @@ export class EventosService {
     
         return [{
             id_evento: evento.id_evento,
+            usuarios: evento.usuarios,
             matriz: {
                 id_matriz: matriz.id_matriz,
                 nombre_matriz: matriz.nombre_matriz,
@@ -155,40 +157,101 @@ export class EventosService {
             estado: evento.estado,
         }];
     }
-    
 
-
-    async getSegunLaMatriz(id_matriz: any, id_empresa : any): Promise<any[]> {
+    async obtenerEventosPorUsuario(id_usuario: number): Promise<any[]> {
         const eventos = await this.eventosRepository.find({
-            order: {
-                id_evento: "DESC"
-            },
             where: {
-                matrices: {id_matriz: id_matriz},
                 estado: true,
-            }
+                usuarios: { id_usuario } // Asumiendo que la relación está configurada correctamente
+            },
+            order: {
+                id_evento: 'DESC'
+            },
+            relations: ['matrices', 'usuarios'] // Asegúrate de que 'matrices' y 'usuarios' son los nombres correctos de las relaciones
         });
-    
+
         // Transforma los datos a un array de objetos sin utilizar un DTO
         return eventos.map(evento => {
+            const matriz = evento.matrices; // Asumiendo que 'matrices' es una relación one-to-one
+
             return {
                 id_evento: evento.id_evento,
-                matriz : evento.matrices,
+                usuarios: evento.usuarios,
+                matriz: {
+                    id_matriz: matriz.id_matriz,
+                    nombre_matriz: matriz.nombre_matriz,
+                    usuario: matriz.usuarios,
+                    matriz_impacto: {
+                        minima: matriz.minima,
+                        menor: matriz.menor,
+                        moderada: matriz.moderada,
+                        mayor: matriz.mayor,
+                        maxima: matriz.maxima,
+                    },
+                    matriz_probabilidad: {
+                        muy_alta: matriz.muy_alta,
+                        alta: matriz.alta,
+                        media: matriz.media,
+                        baja: matriz.baja,
+                        muy_baja: matriz.muy_baja,
+                    },
+                    intervalo_verde: [
+                        {
+                            de_verde: matriz.de_verde,
+                            a_verde: matriz.a_verde
+                        }
+                    ],
+                    intervalo_amarillo: [
+                        {
+                            de_amarillo: matriz.de_amarillo,
+                            a_amarillo: matriz.a_amarillo
+                        }
+                    ],
+                    intervalo_naranja: [
+                        {
+                            de_naranja: matriz.de_naranja,
+                            a_naranja: matriz.a_naranja
+                        }
+                    ],
+                    intervalo_rojo: [
+                        {
+                            de_rojo: matriz.de_rojo,
+                            a_rojo: matriz.a_rojo
+                        }
+                    ]
+                },
                 nombre_evento: evento.nombre_evento,
                 nivel_riesgo: evento.nivel_riesgo,
                 probabilidad: evento.probabilidad,
-                impacto : evento.impacto,
+                impacto: evento.impacto,
                 valor: evento.valor,
+                dominio: evento.dominio,
+                objetivo: evento.objetivo,
+                control: evento.control,
                 estado: evento.estado,
-
-    
-                // Puedes mapear otros campos según sea necesario
             };
         });
     }
-    
+
+  
 
     async crearDato(body: any) {
+
+        const datoEncontrado = await this.usuarioRepository.findOne({
+            where: {
+                id_usuario: parseInt(body.id_usuario, 10),
+                estado_usuario: true,
+            }// Lista de campos que deseas seleccionar
+        });
+
+        if (!datoEncontrado) {
+            throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND);
+        }
+
+        if (!datoEncontrado.estado_usuario) {
+            throw new HttpException('Uusuairo Eliminado', HttpStatus.NOT_FOUND);
+        }
+
 
 
         const datoEncontrado2 = await this.matrizRepository.findOne({
@@ -210,10 +273,53 @@ export class EventosService {
 
         const nuevoDato = this.eventosRepository.create({
             ...body,
-            matrices: datoEncontrado2
+            matrices: datoEncontrado2,
+            usuarios: datoEncontrado
         });
 
         await this.eventosRepository.save(nuevoDato);
         return { message: 'Se registró correctamente' };
     }
+
+
+    async patchDato(id_evento: number, id_usuario?: number): Promise<any> {
+        // Buscar el evento por su ID
+        const evento = await this.eventosRepository.findOne({
+            where: {
+                id_evento: id_evento,
+            },
+            relations: ['usuarios']  // Incluir la relación 'usuarios' si es necesario
+        });
+
+        if (!evento) {
+            throw new HttpException('Evento no encontrado', HttpStatus.NOT_FOUND);
+        }
+
+        if (id_usuario !== undefined) {
+            // Buscar el nuevo usuario por su ID
+            const nuevoUsuario = await this.usuarioRepository.findOne({
+                where: {
+                    id_usuario: id_usuario,
+                    estado_usuario: true,
+                }
+            });
+
+            if (!nuevoUsuario) {
+                throw new HttpException('Usuario no encontrado', HttpStatus.NOT_FOUND);
+            }
+
+            if (!nuevoUsuario.estado_usuario) {
+                throw new HttpException('Usuario Eliminado', HttpStatus.NOT_FOUND);
+            }
+
+            // Actualizar el evento con el nuevo usuario
+            evento.usuarios = nuevoUsuario;
+        }
+
+        // Guardar los cambios
+        await this.eventosRepository.save(evento);
+
+        return { message: 'Evento actualizado correctamente' };
+    }
+    
 }
