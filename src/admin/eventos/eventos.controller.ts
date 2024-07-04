@@ -30,12 +30,12 @@ export class EventosController {
         return this.service.crearDato(body);
     } 
 
-    @Put(':id_evento')
-    Put(
+    @Put('cambiar/:id_evento')
+    putEventos(
         @Param('id_evento', ParseIntPipe) id_evento: number,
-        @Query('id_usuario', ParseIntPipe) id_usuario: number
+        @Body() body: any
     ) {
-        return this.service.patchDato(id_evento, id_usuario);
+        return this.service.patchDato(id_evento, body);
     }
 
 

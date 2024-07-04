@@ -282,7 +282,7 @@ export class EventosService {
     }
 
 
-    async patchDato(id_evento: number, id_usuario?: number): Promise<any> {
+    async patchDato(id_evento: number, body?: any): Promise<any> {
         // Buscar el evento por su ID
         const evento = await this.eventosRepository.findOne({
             where: {
@@ -295,11 +295,11 @@ export class EventosService {
             throw new HttpException('Evento no encontrado', HttpStatus.NOT_FOUND);
         }
 
-        if (id_usuario !== undefined) {
+        if (body !== undefined) {
             // Buscar el nuevo usuario por su ID
             const nuevoUsuario = await this.usuarioRepository.findOne({
                 where: {
-                    id_usuario: id_usuario,
+                    id_usuario: body.id_usuario,
                     estado_usuario: true,
                 }
             });
