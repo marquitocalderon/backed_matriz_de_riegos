@@ -21,6 +21,11 @@ export class EventosController {
         return this.service.obtenerEventosPorUsuario(id_usuario);
     }
 
+    @Get('matriz/:id_matriz')
+    getMatriz(@Param('id_matriz', ParseIntPipe) id_matriz: number) {
+        return this.service.obtenerEventosPorMatriz(id_matriz);
+    }
+
 
 
  
