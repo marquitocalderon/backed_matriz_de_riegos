@@ -42,8 +42,7 @@ export class PerfilesService {
       throw new HttpException('perfil ya existe en la base de datos', HttpStatus.CONFLICT)
      }
 
-     const nuevoPerfil = this.perfilRepository.create(perfil)
-     await this.perfilRepository.save(nuevoPerfil)
+     await this.perfilRepository.save(PerfilEncontrado)
      return {perfil: "Se guardo Correctamente"}
     }
 

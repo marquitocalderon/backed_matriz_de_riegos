@@ -17,6 +17,10 @@ export class UsuariosController {
 
     constructor(private usuarioService: UsuariosService) { }
 
+
+    
+
+
     @Get()
     @PermisoPara(Role.ADMIN)
     getUsuarios() {
