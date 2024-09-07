@@ -6,7 +6,6 @@ import { UsuariosEntity } from './usuarios.entity';
 import { CrearUsuarioDto, UpdateUsuarioDto } from './dto/usuarios.dto';
 import * as bcryptjs from 'bcryptjs'
 import { PerfilesEntity } from '../perfiles/perfiles.entity';
-import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { SucursalesEntity } from '../sucursales/sucursales.entity';
 
 // Asegúrate de importar tu entidad PerfilesEntity
@@ -17,7 +16,6 @@ export class UsuariosService {
     @InjectRepository(UsuariosEntity) private usuarioRepository: Repository<UsuariosEntity>,
     @InjectRepository(PerfilesEntity) private perfilRepository: Repository<PerfilesEntity>,
     @InjectRepository(SucursalesEntity) private sucursalRepository: Repository<SucursalesEntity>,
-    private readonly cloudinaryService: CloudinaryService,
   ) { }
 
   obtenerTodosLosUsuarios() {
@@ -37,7 +35,7 @@ export class UsuariosService {
       where: {
         usuario: usuario,
       },
-      select:["id_usuario","usuario","password","perfiles", "imagen", "sucursales"]
+      select:["id_usuario","usuario","password","perfiles", "sucursales"]
     });
   }
 
@@ -50,7 +48,7 @@ export class UsuariosService {
         id_usuario: id,
         estado_usuario: true,
       },
-      select: ["id_usuario", "usuario", "imagen", "estado_usuario", "perfiles", "sucursales"], // Lista de campos que deseas seleccionar
+      select: ["id_usuario", "usuario", "estado_usuario", "perfiles", "sucursales"], // Lista de campos que deseas seleccionar
     });
 
     if (!usuarioEncontrado) {
@@ -97,18 +95,11 @@ export class UsuariosService {
       throw new HttpException('Usuario ya existe en la base de datos', HttpStatus.CONFLICT);
     }
 
-    let imagenUrl: string | null = null;  // Inicializa imagenUrl como null
 
-    // Verifica si la imagen está definida antes de intentar subirla a Cloudinary
-    if (imagen) {
-      const cloudinaryResponse = await this.cloudinaryService.uploadFile(imagen);
-      imagenUrl = cloudinaryResponse.secure_url;
-    }
 
     const nuevoUsuarioEntity = this.usuarioRepository.create({
       usuario: usuarioFronted.usuario,
       password: await bcryptjs.hash(usuarioFronted.password, 10),
-      imagen: imagenUrl,
       perfiles: perfilEncontrado,
       sucursales: sucusalEncontrada
     });
@@ -174,21 +165,7 @@ export class UsuariosService {
 
 
 
-    let imagenUrl: string | null = usuarioExistente.imagen;  // Inicializa imagenUrl con el valor existente
-
-
-
-    // Verifica si la imagen está definida antes de intentar subirla a Cloudinary
-    if (imagen !== undefined) {
-      const cloudinaryResponse = await this.cloudinaryService.uploadFile(imagen);
-
-      if (!cloudinaryResponse) {
-        throw new HttpException('Error uploading image to Cloudinary', HttpStatus.INTERNAL_SERVER_ERROR);
-      }
-
-      imagenUrl = cloudinaryResponse.secure_url;
-    }
-
+   
 
 
     // Verifica si se proporciona una nueva contraseña
@@ -203,7 +180,6 @@ export class UsuariosService {
     const nuevoUsuarioEntity = this.usuarioRepository.create({
       usuario: datosDelFronted.usuario,
       password: nuevaContraseñaHash ? nuevaContraseñaHash : usuarioExistente.password,
-      imagen: imagenUrl,
       perfiles: perfilEncontrado,
       sucursales: sucusalEncontrada
   });

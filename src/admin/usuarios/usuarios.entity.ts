@@ -16,8 +16,7 @@ export class UsuariosEntity {
     @Column({select: false}) // Especifica la longitud máxima de la columna password
     password: string;
 
-    @Column({nullable: true}) // Especifica la longitud máxima de la columna password
-    imagen: string;
+
 
     @Column({default: true})
     estado_usuario: boolean;

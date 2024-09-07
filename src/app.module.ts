@@ -3,7 +3,6 @@ import { ConfigModule } from "@nestjs/config";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { PerfilesModule } from "./admin/perfiles/perfiles.module";
 import { UsuariosModule } from "./admin/usuarios/usuarios.module";
-import { CloudinaryModule } from "./admin/cloudinary/cloudinary.module";
 import { AuthModule } from "./admin/auth/auth.module";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
@@ -45,7 +44,6 @@ import { IsoModule } from "./admin/iso/iso.module";
     }),
     PerfilesModule,
     UsuariosModule,
-    CloudinaryModule,
     AuthModule,
     StripeModule,
     ModulosModule,
